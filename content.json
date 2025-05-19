@@ -1,0 +1,56 @@
+{
+  "Class 3": {
+    "title": "Clase 2",
+    "data": [
+      "Felino doméstico y ágil",
+      "Maestro del sigilo"
+    ],
+    "comments": [
+      "El gato es un animal curioso.",
+      "Puede saltar hasta 6 veces su altura.",
+      "Su ronroneo tiene efectos calmantes."
+    ],
+    "images": [
+      {
+        "src": "assets/gato1.png",
+        "motion": "fixed",
+        "x": 0.2,
+        "y": 0.5,
+        "scale": 1.0
+      },
+      {
+        "src": "assets/gato2.png",
+        "motion": "orbit",
+        "radius": 100,
+        "speed": 0.01
+      },
+      {
+        "src": "assets/gato3.png",
+        "motion": "wander",
+        "speed": 2
+      }
+    ]
+  },
+
+  "Class 1": {
+    "title": "Clase 1",
+    "data": [
+      "Compañero leal",
+      "Buen guardián"
+    ],
+    "comments": [
+      "El perro entiende gestos humanos.",
+      "Tiene un olfato 100 mil veces más sensible.",
+      "Forma lazos emocionales fuertes con humanos."
+    ],
+    "images": [
+      {
+        "src": "assets/perro1.png",
+        "motion": "fixed",
+        "x": 0.8,
+        "y": 0.5,
+        "scale": 1.0
+      }
+    ]
+  }
+}
