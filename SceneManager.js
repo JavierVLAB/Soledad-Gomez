@@ -6,24 +6,45 @@ class SceneManager {
   }
 
   updateDetectedClass(newClass) {
-    if (newClass === this.currentClass) return;
-
-    if (newClass === "" || !this.content[newClass]) {
-      // Si no hay clase o clase no encontrada, desactiva la escena
-      if (this.currentScene) {
-        this.currentScene.startFadeOut();
-        this.currentClass = "";
-      }
-    } else {
-      // Si hay una nueva clase válida, inicia transición
-      const sceneData = this.content[newClass];
-      const newScene = new Scene(sceneData);
-      newScene.startFadeIn();
-
-      this.currentScene = newScene;
-      this.currentClass = newClass;
-    }
+  if (newClass === this.currentClass) {
+    // Nada ha cambiado, mantener escena actual
+    return;
   }
+
+  // Caso: clase desaparece (""), empezar fadeOut
+  if (newClass === "") {
+    if (this.currentScene && this.fadeState !== "out") {
+      this.currentScene.startFadeOut();
+      this.fadeState = "out";
+    }
+    this.currentClass = "";
+    return;
+  }
+
+  // Caso: misma clase que estaba desapareciendo, volver a fadeIn
+  if (
+    this.currentScene &&
+    this.fadeState === "out" &&
+    newClass === this.currentScene.label
+  ) {
+    this.currentScene.startFadeIn();
+    this.fadeState = "in";
+    this.currentClass = newClass;
+    return;
+  }
+
+  // Caso: nueva clase detectada
+  const sceneData = this.content[newClass];
+  if (sceneData) {
+    const newScene = new Scene(sceneData);
+    newScene.label = newClass; // guardar nombre de clase
+    newScene.startFadeIn();
+    this.currentScene = newScene;
+    this.currentClass = newClass;
+    this.fadeState = "in";
+  }
+}
+
 
   update() {
     if (this.currentScene) {

@@ -1,6 +1,6 @@
 {
-  "Class 3": {
-    "title": "Clase 2",
+  "Molto piacere": {
+    "title": "Molto piacere",
     "data": [
       "Felino doméstico y ágil",
       "Maestro del sigilo"
@@ -33,7 +33,7 @@
   },
 
   "Class 1": {
-    "title": "Clase 1",
+    "title": "Clase superclase",
     "data": [
       "Compañero leal",
       "Buen guardián"

@@ -52,37 +52,111 @@ class Scene {
   render() {
     if (this.opacity <= 0) return;
 
-    // Título
-    push();
-    textAlign(CENTER, CENTER);
-    textSize(48);
-    textFont(fontTitle);
-    fill(0, this.opacity);
-    text(this.title, height / 2, width / 4);
-    pop();
+    this.renderTitle();
+    this.renderData();
+    this.renderComment();
 
-    // Data (esquina superior izquierda)
-    push();
-    textAlign(LEFT, TOP);
-    textSize(18);
-    textFont(fontText);
-    fill(200,0,0, this.opacity);
-    let yOffset = 20;
-    for (let i = 0; i < this.dataLines.length; i++) {
-      text(this.dataLines[i], 20, yOffset);
-      yOffset += 24;
-    }
-    pop();
+  }
 
-    // Comment (frase completa)
-    if (this.commentPhrases.length > 0) {
-      push();
-      textAlign(CENTER, BOTTOM);
-      textSize(24);
-      textFont(fontText);
-      fill(255,255,0, this.opacity);
-      text(this.commentPhrases[this.commentIndex], height / 2, width - 100);
-      pop();
+  renderTitle() {
+    const x = screenWidth / 6;
+    const y = screenHeight / 6;
+
+    this.drawTextWithBackground(this.title, x, y, {
+      fontSize: 40,
+      font: fontTitle,
+      align: LEFT,
+      baseline: CENTER,
+    });
+  }
+
+  renderData() {
+    const startX = screenWidth / 6 - 40;
+    let y = screenHeight / 6 + 40;
+
+    for (let line of this.dataLines) {
+      this.drawTextWithBackground(line, startX, y, {
+        fontSize: 40,
+        font: fontText,
+        align: LEFT,
+        baseline: TOP
+      });
+      y += 50; // espacio entre líneas
     }
   }
+
+  renderComment() {
+    if (this.commentPhrases.length === 0) return;
+
+    const comment = this.commentPhrases[this.commentIndex];
+    const x = screenWidth / 2;
+    const y = 5 * screenHeight / 6;
+
+    this.drawTextWithBackground(comment, x, y, {
+      fontSize: 35,
+      align: CENTER,
+      baseline: CENTER
+    });
+  }
+
+  drawTextWithBackground(txt, x, y, options = {}) {
+    const {
+      align = CENTER,
+      baseline = CENTER,
+      fontSize = 32,
+      font = fontText,
+      textColor = [255, this.opacity],
+      bgColor = [0, this.opacity],
+      padding = 30,
+      cornerRadius = 0
+    } = options;
+
+    push();
+    textSize(fontSize);
+    textFont(font);
+
+    const w = textWidth(txt);
+    const h = fontSize + 10;
+
+    let rectX, rectY, textX, textY;
+
+    // === Horizontal alignment ===
+    if (align === LEFT) {
+      rectX = x;
+      textX = x + padding / 2;
+    } else if (align === RIGHT) {
+      rectX = x - w - padding;
+      textX = x - padding / 2;
+    } else { // CENTER
+      rectX = x - (w + padding) / 2;
+      textX = x;
+    }
+
+    // === Vertical alignment ===
+    if (baseline === TOP) {
+      rectY = y;
+      textY = y + h / 2;
+    } else if (baseline === BOTTOM) {
+      rectY = y - h;
+      textY = y - h / 2;
+    } else { // CENTER
+      rectY = y - h / 2;
+      textY = y;
+    }
+
+    // Fondo
+    noStroke();
+    fill(...bgColor);
+    rectMode(CORNER);
+    rect(rectX, rectY, w + padding, h, cornerRadius);
+
+    // Texto
+    fill(...textColor);
+    textAlign(align, CENTER); // siempre vertical CENTER para alinear sobre textY
+    text(txt, textX, textY);
+    pop();
+  }
+
+
+
 }
