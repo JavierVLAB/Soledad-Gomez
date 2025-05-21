@@ -17,8 +17,8 @@ let fontTitle, fontText;
 
 function preload() {
   contentData = loadJSON("content.json?v=" + Date.now());
-  fontTitle = loadFont('assets/MXYRPZ-UniversLTStd-BoldCnObl.ttf');
-  fontText = loadFont('assets/MXYRPZ-UniversLTStd-BoldCnObl.ttf');
+  fontTitle = loadFont('assets/UniversLTStd-BoldCnObl 6.otf');
+  fontText = loadFont('assets/UniversLTStd-BoldCnObl 6.otf');
 }
 
 
