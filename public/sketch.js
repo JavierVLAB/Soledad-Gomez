@@ -1,6 +1,7 @@
 //let modelURL = './my_model/';
-let modelURL = 'https://teachablemachine.withgoogle.com/models/2HucpcZdT/';
+//let modelURL = 'https://teachablemachine.withgoogle.com/models/2HucpcZdT/';
 //let modelURL = 'https://teachablemachine.withgoogle.com/models/-owFz2BSZ/';
+let modelURL = 'https://teachablemachine.withgoogle.com/models/qqhdQRo-q/'
 
 let classifier;
 let video;
@@ -15,23 +16,37 @@ let screenWidth;
 let screenHeight;
 let fontTitle, fontText;
 
+let cam;
+
+let classKeys = [];
+let currentIndex = -1;
+
+let idleData;
+let idleTimer = 0;
+const idleThreshold = 60 * 60 * 3; // 3 minutos a 60fps
+
 function preload() {
-  contentData = loadJSON("content.json?v=" + Date.now());
+  contentData = loadJSON("Soledad_Gomez_all.json?v=" + Date.now());
+  idleData = loadJSON("idleTexts.json?v=" + Date.now());
   fontTitle = loadFont('assets/UniversLTStd-BoldCnObl 6.otf');
   fontText = loadFont('assets/UniversLTStd-BoldCnObl 6.otf');
 }
 
 
-let cam;
+
+
 
 function setup() {
+  console.log("Idle data cargado:", idleData);
+  classKeys = Object.keys(contentData);
   createCanvas(windowWidth, windowHeight);
-  //video = createCapture(VIDEO);
+  
   video = createImg("http://localhost:8080/video", "stream");
-  //video.size(320, 240);
   video.hide();
 
   sceneManager = new SceneManager(contentData);
+  sceneManager.loadIdleTexts(idleData);
+
   classifier = ml5.imageClassifier(modelURL + 'model.json', () => {
     console.log("Modelo personalizado cargado");
     modelReady();
@@ -48,7 +63,7 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  background(255);
 
   push();
 
@@ -147,6 +162,13 @@ function keyPressed() {
     currentClass = "Molto piacere";
   } else {
     currentClass = "";
+  }
+
+  if (key === 'c') {
+    currentIndex = (currentIndex + 1) % classKeys.length;
+    currentClass = classKeys[currentIndex];
+    console.log("Clase simulada:", currentClass);
+    sceneManager.updateDetectedClass(currentClass);
   }
 
   sceneManager.updateDetectedClass(currentClass);

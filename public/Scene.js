@@ -1,9 +1,11 @@
 class Scene {
   constructor(data) {
-    this.title = data.title;
-    this.dataLines = data.data || [];
-    this.commentPhrases = data.comments || [];
 
+    this.title = data.title;
+    this.date = data.recepcion || "";
+    this.dataLines = data.recepcion || [];
+    this.commentPhrases = data.comments || data.Testimonio || [];
+    
     this.opacity = 0;
     this.fadeDirection = 0; // 1: fade-in, -1: fade-out
 
@@ -11,6 +13,8 @@ class Scene {
     this.commentIndex = 0;
     this.commentTimer = 0;
     this.commentInterval = 180; // frames por frase (~3 segundos a 60fps)
+
+    this.isIdle = data?.isIdle || false;
   }
 
   startFadeIn() {
@@ -30,7 +34,7 @@ class Scene {
         this.fadeDirection = 0;
       }
     } else if (this.fadeDirection === -1) {
-      this.opacity -= 1;
+      this.opacity -= 2;
       if (this.opacity <= 0) {
         this.opacity = 0;
         this.fadeDirection = 0;
@@ -49,11 +53,21 @@ class Scene {
     }
   }
 
+  isInvisible() {
+    return this.opacity <= 0;
+  }
+
   render() {
     if (this.opacity <= 0) return;
 
+    if (this.isIdle) {
+      this.renderIdle();
+      return;
+    }
+
     this.renderTitle();
-    this.renderData();
+    this.renderDate();
+    //this.renderData();
     this.renderComment();
 
   }
@@ -63,6 +77,18 @@ class Scene {
     const y = screenHeight / 6;
 
     this.drawTextWithBackground(this.title, x, y, {
+      fontSize: 40,
+      font: fontTitle,
+      align: LEFT,
+      baseline: CENTER,
+    });
+  }
+
+  renderDate() {
+    const x = screenWidth / 6 - 40;
+    const y = screenHeight / 6 + 60;
+    //console.log(this.date);
+    this.drawTextWithBackground(this.date, x, y, {
       fontSize: 40,
       font: fontTitle,
       align: LEFT,
@@ -98,6 +124,37 @@ class Scene {
       baseline: CENTER
     });
   }
+
+  fadeOut() {
+    if (this.opacity > 0) {
+      this.opacity -= this.fadeSpeed;
+    }
+  }
+
+  renderIdle() {
+    push();
+    textAlign(CENTER, TOP);
+    textSize(35);
+    textFont(fontText);
+
+    let lineHeight = 60;
+    let startY = 200;
+
+    for (let i = 0; i < this.commentPhrases.length; i++) {
+      let line = this.commentPhrases[i];
+      let y = startY + i * lineHeight;
+
+      this.drawTextWithBackground(line, 75, y, {
+        align: LEFT,
+        baseline: CENTER,
+        fontSize: 35,
+        font: fontText
+      });
+    }
+
+    pop();
+  }
+
 
   drawTextWithBackground(txt, x, y, options = {}) {
     const {
@@ -159,4 +216,30 @@ class Scene {
 
 
 
+}
+
+function splitTestimonioIntoChunks(text, maxLen = 90) {
+  return text
+    .split('.')
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+    .flatMap(sentence => {
+      if (sentence.length <= maxLen) return [sentence];
+      // Si es muy larga, dividir sin romper palabras
+      const words = sentence.split(' ');
+      const chunks = [];
+      let current = '';
+
+      for (let word of words) {
+        if ((current + ' ' + word).trim().length <= maxLen) {
+          current += (current ? ' ' : '') + word;
+        } else {
+          chunks.push(current);
+          current = word;
+        }
+      }
+      if (current) chunks.push(current);
+
+      return chunks;
+    });
 }
