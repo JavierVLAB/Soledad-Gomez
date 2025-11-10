@@ -41,7 +41,8 @@ function setup() {
   classKeys = Object.keys(contentData);
   createCanvas(windowWidth, windowHeight);
   
-  video = createImg("http://localhost:8080/video", "stream");
+  //video = createImg("http://localhost:8080/video", "stream");
+  video = createCapture(VIDEO);
   video.hide();
 
   sceneManager = new SceneManager(contentData);
