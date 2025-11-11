@@ -1,7 +1,13 @@
 //let modelURL = './my_model/';
 //let modelURL = 'https://teachablemachine.withgoogle.com/models/2HucpcZdT/';
 //let modelURL = 'https://teachablemachine.withgoogle.com/models/-owFz2BSZ/';
-let modelURL = 'https://teachablemachine.withgoogle.com/models/qqhdQRo-q/'
+// modelo antes del noviembre2025
+//let modelURL = 'https://teachablemachine.withgoogle.com/models/qqhdQRo-q/'; 
+
+// modelo antes del 10 noviembre2025
+// se añadieron las camisas blancas
+//let modelURL = 'https://teachablemachine.withgoogle.com/models/akPXWZY9z/'; 
+let modelURL = "./tm-my-image-model/";
 
 let classifier;
 let video;
@@ -10,8 +16,8 @@ let confidence = 0;
 let sceneManager;
 let contentData;
 
-let rotateScreen = true;
-let rotateCamera = true;
+let rotateScreen = false;
+let rotateCamera = false;
 let screenWidth;
 let screenHeight;
 let fontTitle, fontText;
@@ -138,7 +144,7 @@ function gotResult(error, results) {
     if (result.label !== "Clase 4" && result.confidence > 0.8) {
       detectedClass = result.label;
       confidenceValue = result.confidence;
-      console.log(detectedClass, confidenceValue);
+      //console.log(detectedClass, confidenceValue);
     }
   }
 

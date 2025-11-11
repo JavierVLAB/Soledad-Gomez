@@ -111,5 +111,26 @@
     "Nueva Piel": null,
     "Venta": null,
     "Imagen": null
+  },
+  "Blancas": {
+    "ID": 7,
+    "title": "Blancas",
+    "color camisa": "Blancas",
+    "recepcion": "Octubre, 2025",
+    "Testimonio": ["Esta camisa perteneció a un hermano", 
+                    "que falleció en un accidente de moto.", 
+                    "La usó para un evento de trabajo y", 
+                    "yo la conservo desde hace unos años", 
+                    "por el valor sentimental,", 
+                    "ahora por motivos económicos y de espacio", 
+                    "estoy vaciando su armario."],
+    "Categoria": "Categoría 1, Sutura, Unisex",
+    "Talla": null,
+    "Color Tinta": "Azul",
+    "Composición": "Seda",
+    "Comentarios": null,
+    "Nueva Piel": null,
+    "Venta": null,
+    "Imagen": null
   }
 }
