@@ -16,8 +16,8 @@ let confidence = 0;
 let sceneManager;
 let contentData;
 
-let rotateScreen = false;
-let rotateCamera = false;
+let rotateScreen = true;
+let rotateCamera = true;
 let screenWidth;
 let screenHeight;
 let fontTitle, fontText;
