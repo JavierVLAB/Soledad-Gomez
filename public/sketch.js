@@ -79,7 +79,24 @@ function draw() {
   if (rotateScreen) {
     // Rota 90 grados y ajusta el sistema de coordenadas
 
-    image(video, 0, 0, screenHeight, screenHeight * 240 / 320);
+        // Calcula la altura que estás usando para la imagen
+    let imgHeight = screenHeight * 240 / 320;
+
+    push(); // Guarda la configuración actual de transformación
+
+      // 1. Traslada el origen al borde inferior de la imagen.
+      // El ancho queda en 0, y la altura es la variable imgHeight.
+      translate(0, imgHeight);
+
+      // 2. Aplica el flip vertical escalando por -1 en el eje Y.
+      scale(1, -1);
+
+      // 3. Dibuja la imagen. 
+      // Debido a que el eje Y está invertido, el dibujo comenzará desde el nuevo 0 (que es imgHeight) 
+      // y se extenderá hacia arriba, resultando en el flip vertical.
+      image(video, 0, 0, screenHeight, imgHeight);
+
+    pop(); // Restaura la configuración de transformación anterior
     translate(width, 0);
     rotate(HALF_PI);
   } else {   
